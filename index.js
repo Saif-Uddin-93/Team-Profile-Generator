@@ -20,15 +20,15 @@ const { finished } = require("stream");
 
 // array of questions for user
 
-const addEmployeePrompt = {
+const addEmployeePrompt = [{
     type: 'list',
     name: 'role',
     message: "Do you want to add an employee?",
     choices: ['Engineer', 'Intern', 'Finished'],
-}
+}]
 
 const employeeQuestion = {
-    Manager : [{
+    Manager: [{
         type: 'input',
         name: 'officeNumber',
         message: "What is the office number?",
@@ -38,36 +38,12 @@ const employeeQuestion = {
         name: 'engineerGithub',
         message: "What is the engineer's Github username?",
     }],
-    Intern : [{
+    Intern: [{
         type: 'input',
         name: 'internSchool',
         message: "What is the intern's school?",
     }]
 }
-
-// const managerPrompt = [
-//     {
-//         type: 'input',
-//         name: 'officeNumber',
-//         message: "What is the office number?",
-//     },
-// ]
-
-// const engineerPrompt = [
-//     {
-//         type: 'input',
-//         name: 'engineerGithub',
-//         message: "What is the engineer's Github username?",
-//     },
-// ];
-
-// const internPrompt = [
-//     {
-//         type: 'input',
-//         name: 'internSchool',
-//         message: "What is the intern's school?",
-//     },
-// ];
 
 const employeePrompts = (role)=>[
     {
@@ -87,12 +63,37 @@ const employeePrompts = (role)=>[
     },
 ];
 
+let employees = {
+    managers: [{
+        name: '',
+        id: '',
+        email: '',
+        officeNumber: '',
+    }],
+    engineers: [{
+        name: '',
+        id: '',
+        email: '',
+        officeNumber: '',
+    }],
+    interns: [{
+        name: '',
+        id: '',
+        email: '',
+        officeNumber: '',
+    }],
+}
+
 const promptUser = (prompts)=> {
     return inquirer.prompt(prompts)
 }
 
-async function addEmployee(role){
-    switch (role.role) {
+async function addEmployee(answers){
+    switch (answers.role) {
+        case 'Manager':
+            const managerResponse = await promptUser(engineerPrompt);
+            answers[`employeeResponse${index}`]=managerResponse[0];
+            break;
         case 'Engineer':
             const engineerResponse = await promptUser(engineerPrompt);
             answers[`employeeResponse${index}`]=engineerResponse[0];
@@ -108,6 +109,7 @@ async function addEmployee(role){
     }
     // console.log(answers);
     // addEmployee(answers, index+1);
+    return answers
 }
 
 // function to initialize program
@@ -131,9 +133,7 @@ try {
         };
     }
 
-    console.log();
-
-    await addEmployee(answers);
+    await addEmployee();
     
     // switch (answers.addEmployee) {
     //     case 'Engineer':
