@@ -11,6 +11,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
+const { finished } = require("stream");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
@@ -26,29 +27,47 @@ const addEmployeePrompt = {
     choices: ['Engineer', 'Intern', 'Finished'],
 }
 
-const managerPrompt = [
-    {
+const employeeQuestion = {
+    Manager : [{
         type: 'input',
         name: 'officeNumber',
         message: "What is the office number?",
-    },
-]
-
-const engineerPrompt = [
-    {
+    }],
+    Engineer: [{
         type: 'input',
         name: 'engineerGithub',
         message: "What is the engineer's Github username?",
-    },
-];
-
-const internPrompt = [
-    {
+    }],
+    Intern : [{
         type: 'input',
         name: 'internSchool',
         message: "What is the intern's school?",
-    },
-];
+    }]
+}
+
+// const managerPrompt = [
+//     {
+//         type: 'input',
+//         name: 'officeNumber',
+//         message: "What is the office number?",
+//     },
+// ]
+
+// const engineerPrompt = [
+//     {
+//         type: 'input',
+//         name: 'engineerGithub',
+//         message: "What is the engineer's Github username?",
+//     },
+// ];
+
+// const internPrompt = [
+//     {
+//         type: 'input',
+//         name: 'internSchool',
+//         message: "What is the intern's school?",
+//     },
+// ];
 
 const employeePrompts = (role)=>[
     {
@@ -94,17 +113,25 @@ async function addEmployee(role){
 // function to initialize program
 const init = async () => {
 try {
-    const managerResponse = await promptUser(employeePrompts('manager'));
-    finalResponsesExample['manager']=managerResponse;
+    const managerQ = await promptUser(employeePrompts('Manager'));
+    const officeNumber = await promptUser(employeeQuestion['Manager'][0]);
+    finalResponsesExample['manager']={
+        ...managerQ,
+        ...officeNumber,
+    };
     
     const role = await promptUser([addEmployeePrompt]);
 
-    const employeeResponse = await promptUser(employeePrompts(role.role));
-    employeeResponse['role']=role.role
-    const employeeExtraQuestion = addEmployee(role.role)
-    finalResponsesExample[role.role]=employeeResponse;
-    
-    console.log(answers);
+    if (role != "Finished"){
+        const employeeQ = await promptUser(employeePrompts(role));
+        const employeeRes = await promptUser(employeeQuestion[role][0]);
+        finalResponsesExample[role]={
+            ...employeeQ,
+            ...employeeRes,
+        };
+    }
+
+    console.log();
 
     await addEmployee(answers);
     
