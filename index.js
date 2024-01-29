@@ -16,8 +16,6 @@ const { finished } = require("stream");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
-//const addEmployeeResponses=['Engineer', 'Intern', 'Finished']
-
 // array of questions for user
 
 const addEmployeePrompt = [{
@@ -67,23 +65,23 @@ const employeePrompts = (role)=>[
 ];
 
 let employees = {
-    managers: [
+    manager: [
     //     name: '',
     //     id: '',
     //     email: '',
     //     officeNumber: '',
     ],
-    engineers: [
+    engineer: [
     //     name: '',
     //     id: '',
     //     email: '',
-    //     officeNumber: '',
+    //     github: '',
     ],
-    interns: [
+    intern: [
     //     name: '',
     //     id: '',
     //     email: '',
-    //     officeNumber: '',
+    //     school: '',
     ],
 }
 
@@ -91,26 +89,11 @@ const promptUser = (prompts)=> {
     return inquirer.prompt(prompts)
 }
 
-async function addEmployee(role, index){
+async function addEmployee(role){
     // array index to keep track of number of employees.
     // add employee answers to employee object.
-    // let extraQuestion;
-    // switch (role) {
-    //     case 'manager':
-    //         extraQuestion = "officeNumber";
-    //         break;
-    //     case 'engineer':
-    //         extraQuestion = "github";
-    //         break;
-    //     case 'intern':
-    //         extraQuestion = "school";
-    //         break;
-    //     case 'finished':
-    //         break;
-    //     default:
-    //         break;
-    // }
-    const answers = await promptUser(employeePrompts(role));
+    let answers = await promptUser(employeePrompts(role));
+    let index = employees[role].length;
     const additionalQuestion = await promptUser(employeeQuestion[role]);
     // answers[extraQuestion] = await promptUser(employeeQuestion[role]);
     answers = {...answers, ...additionalQuestion};
@@ -118,12 +101,13 @@ async function addEmployee(role, index){
     // return answers
 }
 
-async function notFinished(index=0){
+async function notFinished(){
     const role = await promptUser(addEmployeePrompt);
-    if (role.role != "Finished"){
+    if (role.role != "finished"){
         // add Employee!
-        addEmployee(role.role,index);
-        notFinished(index + 1);
+        await addEmployee(role.role);
+        // console.log(employees);
+        notFinished();
     }
 }
 
@@ -133,78 +117,15 @@ async function notFinished(index=0){
 // function to initialize program
 const init = async () => {
 try {
-    // prompt user expects an array of objects
-    // const managerQ = await promptUser(employeePrompts('Manager'));
-    // managerQ['officeNumber'] = await promptUser(employeeQuestion['Manager']);
-
-    // const managerQ = addEmployee("Manager");
-    // manager(managerQ.name, managerQ.id, managerQ.email, managerQ.officeNumber);
-    // console.log(manager.getOfficeNumber);
-    // finalResponsesExample['manager']={
-    //     ...managerQ,
-    //     ...officeNumber,
-    // };
-
-    await addEmployee('Manager', 0)
+    await addEmployee('manager', 0)
     
     await notFinished();
 
     console.log(employees);
-    // await addEmployee();
-    
-    // switch (answers.addEmployee) {
-    //     case 'Engineer':
-    //         const engineerResponse = await promptUser(engineerPrompt);
-    //         answers.push(engineerResponse);
-    //         break;
-    //     case 'Intern':     
-    //         const internResponse = await promptUser(internPrompt);
-    //         answers.push(internResponse);
-    //         break;
-    //     case 'Finished':
-    //         break;
-    //     default:
-    //         break;
-    // }
-    // const md = generateMarkdown(answers);
 
-    // await fs.writeFile('generated readme.md', md);
-
-    // console.log('Successfully wrote to readme.md');
     } catch (err) {
         console.log(err);
     }
 };
 
 init();
-
-// let finalResponsesExample=[
-//     {
-//         role: '',
-//         name: '',
-//         id: '',
-//         email: '',
-//         githubSchoolOffice: '',
-//     },
-//     {
-//         role: '',
-//         name: '',
-//         id: '',
-//         email: '',
-//         githubSchoolOffice: '',
-//     },
-//     {
-//         role: '',
-//         name: '',
-//         id: '',
-//         email: '',
-//         githubSchoolOffice: '',
-//     },
-//     {
-//         role: '',
-//         name: '',
-//         id: '',
-//         email: '',
-//         githubSchoolOffice: '',
-//     },
-// ]
