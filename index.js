@@ -112,11 +112,18 @@ async function addEmployee(answers){
     return answers
 }
 
+// instantiate Manager
+const manager = new Manager();
+
 // function to initialize program
 const init = async () => {
 try {
+    // prompt user expects an array of objects
     const managerQ = await promptUser(employeePrompts('Manager'));
-    const officeNumber = await promptUser(employeeQuestion['Manager'][0]);
+    managerQ['officeNumber'] = await promptUser(employeeQuestion['Manager']);
+
+    manager(managerQ.name, managerQ.id, managerQ.email, managerQ.officeNumber);
+
     finalResponsesExample['manager']={
         ...managerQ,
         ...officeNumber,
@@ -160,7 +167,6 @@ try {
 };
 
 init();
-
 
 let finalResponsesExample=[
     {
