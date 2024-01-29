@@ -24,21 +24,21 @@ const addEmployeePrompt = [{
     type: 'list',
     name: 'role',
     message: "Do you want to add an employee?",
-    choices: ['Engineer', 'Intern', 'Finished'],
+    choices: ['engineer', 'intern', 'finished'],
 }]
 
 const employeeQuestion = {
-    Manager: [{
+    manager: [{
         type: 'input',
         name: 'officeNumber',
         message: "What is the office number?",
     }],
-    Engineer: [{
+    engineer: [{
         type: 'input',
         name: 'engineerGithub',
         message: "What is the engineer's Github username?",
     }],
-    Intern: [{
+    intern: [{
         type: 'input',
         name: 'internSchool',
         message: "What is the intern's school?",
@@ -48,99 +48,109 @@ const employeeQuestion = {
 const employeePrompts = (role)=>[
     {
         type: 'input',
-        name: `${role}Name`,
+        //name: `${role}Name`,
+        name: `name`,
         message: `What is the ${role}'s name?`,
     },
     {
         type: 'input',
-        name: `${role}Id`,
+        //name: `${role}Id`,
+        name: `id`,
         message: `What is the ${role}'s ID?`,
     },
     {
         type: 'input',
-        name: `${role}Email`,
+        //name: `${role}Email`,
+        name: `email`,
         message: `What is the ${role}'s email address?`,
     },
 ];
 
 let employees = {
-    managers: [{
-        name: '',
-        id: '',
-        email: '',
-        officeNumber: '',
-    }],
-    engineers: [{
-        name: '',
-        id: '',
-        email: '',
-        officeNumber: '',
-    }],
-    interns: [{
-        name: '',
-        id: '',
-        email: '',
-        officeNumber: '',
-    }],
+    managers: [
+    //     name: '',
+    //     id: '',
+    //     email: '',
+    //     officeNumber: '',
+    ],
+    engineers: [
+    //     name: '',
+    //     id: '',
+    //     email: '',
+    //     officeNumber: '',
+    ],
+    interns: [
+    //     name: '',
+    //     id: '',
+    //     email: '',
+    //     officeNumber: '',
+    ],
 }
 
 const promptUser = (prompts)=> {
     return inquirer.prompt(prompts)
 }
 
-async function addEmployee(answers){
-    switch (answers.role) {
-        case 'Manager':
-            const managerResponse = await promptUser(engineerPrompt);
-            answers[`employeeResponse${index}`]=managerResponse[0];
-            break;
-        case 'Engineer':
-            const engineerResponse = await promptUser(engineerPrompt);
-            answers[`employeeResponse${index}`]=engineerResponse[0];
-            break;
-        case 'Intern':
-            const internResponse = await promptUser(internPrompt);
-            answers[`employeeResponse${index}`]=internResponse[0];
-            break;
-        case 'Finished':
-            break;
-        default:
-            break;
+async function addEmployee(role, index){
+    // array index to keep track of number of employees.
+    // add employee answers to employee object.
+    // let extraQuestion;
+    // switch (role) {
+    //     case 'manager':
+    //         extraQuestion = "officeNumber";
+    //         break;
+    //     case 'engineer':
+    //         extraQuestion = "github";
+    //         break;
+    //     case 'intern':
+    //         extraQuestion = "school";
+    //         break;
+    //     case 'finished':
+    //         break;
+    //     default:
+    //         break;
+    // }
+    const answers = await promptUser(employeePrompts(role));
+    const additionalQuestion = await promptUser(employeeQuestion[role]);
+    // answers[extraQuestion] = await promptUser(employeeQuestion[role]);
+    answers = {...answers, ...additionalQuestion};
+    employees[role][index] = answers//[answers.name]
+    // return answers
+}
+
+async function notFinished(index=0){
+    const role = await promptUser(addEmployeePrompt);
+    if (role.role != "Finished"){
+        // add Employee!
+        addEmployee(role.role,index);
+        notFinished(index + 1);
     }
-    // console.log(answers);
-    // addEmployee(answers, index+1);
-    return answers
 }
 
 // instantiate Manager
-const manager = new Manager();
+// const manager = new Manager();
 
 // function to initialize program
 const init = async () => {
 try {
     // prompt user expects an array of objects
-    const managerQ = await promptUser(employeePrompts('Manager'));
-    managerQ['officeNumber'] = await promptUser(employeeQuestion['Manager']);
+    // const managerQ = await promptUser(employeePrompts('Manager'));
+    // managerQ['officeNumber'] = await promptUser(employeeQuestion['Manager']);
 
-    manager(managerQ.name, managerQ.id, managerQ.email, managerQ.officeNumber);
+    // const managerQ = addEmployee("Manager");
+    // manager(managerQ.name, managerQ.id, managerQ.email, managerQ.officeNumber);
+    // console.log(manager.getOfficeNumber);
+    // finalResponsesExample['manager']={
+    //     ...managerQ,
+    //     ...officeNumber,
+    // };
 
-    finalResponsesExample['manager']={
-        ...managerQ,
-        ...officeNumber,
-    };
+    await addEmployee('Manager', 0)
     
-    const role = await promptUser([addEmployeePrompt]);
+    await notFinished();
 
-    if (role != "Finished"){
-        const employeeQ = await promptUser(employeePrompts(role));
-        const employeeRes = await promptUser(employeeQuestion[role][0]);
-        finalResponsesExample[role]={
-            ...employeeQ,
-            ...employeeRes,
-        };
-    }
-
-    await addEmployee();
+    console.log(employees);
+    // await addEmployee();
     
     // switch (answers.addEmployee) {
     //     case 'Engineer':
@@ -161,40 +171,40 @@ try {
     // await fs.writeFile('generated readme.md', md);
 
     // console.log('Successfully wrote to readme.md');
-} catch (err) {
-    console.log(err);
-}
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 init();
 
-let finalResponsesExample=[
-    {
-        role: '',
-        name: '',
-        id: '',
-        email: '',
-        githubSchoolOffice: '',
-    },
-    {
-        role: '',
-        name: '',
-        id: '',
-        email: '',
-        githubSchoolOffice: '',
-    },
-    {
-        role: '',
-        name: '',
-        id: '',
-        email: '',
-        githubSchoolOffice: '',
-    },
-    {
-        role: '',
-        name: '',
-        id: '',
-        email: '',
-        githubSchoolOffice: '',
-    },
-]
+// let finalResponsesExample=[
+//     {
+//         role: '',
+//         name: '',
+//         id: '',
+//         email: '',
+//         githubSchoolOffice: '',
+//     },
+//     {
+//         role: '',
+//         name: '',
+//         id: '',
+//         email: '',
+//         githubSchoolOffice: '',
+//     },
+//     {
+//         role: '',
+//         name: '',
+//         id: '',
+//         email: '',
+//         githubSchoolOffice: '',
+//     },
+//     {
+//         role: '',
+//         name: '',
+//         id: '',
+//         email: '',
+//         githubSchoolOffice: '',
+//     },
+// ]
