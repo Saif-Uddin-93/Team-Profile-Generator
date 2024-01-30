@@ -61,26 +61,26 @@ const employeePrompts = (role)=>[
     },
 ];
 
-let employees = {
-    manager: [
-    //     name: '',
-    //     id: '',
-    //     email: '',
-    //     officeNumber: '',
-    ],
-    engineer: [
-    //     name: '',
-    //     id: '',
-    //     email: '',
-    //     github: '',
-    ],
-    intern: [
-    //     name: '',
-    //     id: '',
-    //     email: '',
-    //     school: '',
-    ],
-}
+let employees = [] // {
+//     manager: [
+//     //     name: '',
+//     //     id: '',
+//     //     email: '',
+//     //     officeNumber: '',
+//     ],
+//     engineer: [
+//     //     name: '',
+//     //     id: '',
+//     //     email: '',
+//     //     github: '',
+//     ],
+//     intern: [
+//     //     name: '',
+//     //     id: '',
+//     //     email: '',
+//     //     school: '',
+//     ],
+// }
 
 const promptUser = (prompts)=> {
     return inquirer.prompt(prompts)
@@ -91,16 +91,22 @@ async function addEmployee(role){
     // add employee answers to employee object.
     let answers = await promptUser(employeePrompts(role));
     const additionalQuestion = await promptUser(employeeQuestion[role]);
-    let index = employees[role].length;
+    //let index = employees[role].length;
+    //let index = employees.length;
     answers = {...answers, ...additionalQuestion};
     //employees[role][index] = answers//[answers.name]
     switch(role){
         case "manager":
-            employees[role][index] = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+            // employees[role][index] = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+            employees.push(new Manager(answers.name, answers.id, answers.email, answers.officeNumber))
             break;
         case "engineer":
+            // employees[role][index] = new Engineer(answers.name, answers.id, answers.email, answers.github)
+            employees.push(new Engineer(answers.name, answers.id, answers.email, answers.github))
             break;
         case "intern":
+            // employees[role][index] = new Intern(answers.name, answers.id, answers.email, answers.school)
+            employees.push(new Intern(answers.name, answers.id, answers.email, answers.school))
             break;
         default:
             break;
@@ -126,6 +132,7 @@ try {
     await notFinished();
 
     console.log(employees);
+    render(employees);
 
     } catch (err) {
         console.log(err);
