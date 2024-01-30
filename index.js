@@ -15,7 +15,6 @@ const { finished } = require("stream");
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
 // array of questions for user
-
 const addEmployeePrompt = [{
     type: 'list',
     name: 'role',
@@ -31,12 +30,12 @@ const employeeQuestion = {
     }],
     engineer: [{
         type: 'input',
-        name: 'engineerGithub',
+        name: 'github',
         message: "What is the engineer's Github username?",
     }],
     intern: [{
         type: 'input',
-        name: 'internSchool',
+        name: 'school',
         message: "What is the intern's school?",
     }]
 }
@@ -91,10 +90,21 @@ async function addEmployee(role){
     // array index to keep track of number of employees.
     // add employee answers to employee object.
     let answers = await promptUser(employeePrompts(role));
-    let index = employees[role].length;
     const additionalQuestion = await promptUser(employeeQuestion[role]);
+    let index = employees[role].length;
     answers = {...answers, ...additionalQuestion};
-    employees[role][index] = answers//[answers.name]
+    //employees[role][index] = answers//[answers.name]
+    switch(role){
+        case "manager":
+            employees[role][index] = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+            break;
+        case "engineer":
+            break;
+        case "intern":
+            break;
+        default:
+            break;
+    }
     // return answers
 }
 
@@ -104,12 +114,9 @@ async function notFinished(){
         // add Employee!
         await addEmployee(role.role);
         // console.log(employees);
-        notFinished();
+        await notFinished();
     }
 }
-
-// instantiate Manager
-// const manager = new Manager();
 
 // function to initialize program
 const init = async () => {
