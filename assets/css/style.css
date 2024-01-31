@@ -8,6 +8,7 @@
     color: white;
     
     & .card {
+        box-shadow: 10px 10px lightblue;
         & .card-body{
             color: black;
         }
