@@ -29,7 +29,7 @@ async function checkOutputFolder(){
 
 async function writeTeamHTML(team){
     fs.writeFile(outputPath, render(team), ()=>{
-        console.log()
+        console.log("created team.html file")
     });
 }
 
@@ -151,6 +151,7 @@ async function notFinished(){
     if (role.role != "finished"){
         // add Employee!
         await addEmployee(role.role);
+        console.log("Current team:");
         console.log(employees);
         await notFinished();
     }
@@ -166,7 +167,8 @@ try {
     await checkOutputFolder();
 
     await writeTeamHTML(employees);
-    
+
+    console.log("Final team:");
     console.log(employees);
 
     } catch (err) {
