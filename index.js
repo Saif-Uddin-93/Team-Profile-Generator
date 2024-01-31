@@ -10,14 +10,27 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
-const { finished } = require("stream");
 
-function checkOutputFolder(){
-    if(!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR);
+async function checkOutputFolder(){
+    //if(!fs.existsSync(OUTPUT_DIR)) 
+    fs.stat(OUTPUT_DIR, (err, stats)=>{
+        if(!err){
+            console.log("folder already exists")
+        }
+        else {
+            console.log("folder does not exist")
+            fs.mkdir(OUTPUT_DIR, (err, path)=>{
+                if(!err) console.log("output folder created");
+                else console.log("error making directory");
+            });
+        }
+    })
 }
 
-function writeTeamHTML(team){
-    fs.writeFileSync(outputPath, render(team));
+async function writeTeamHTML(team){
+    fs.writeFile(outputPath, render(team), ()=>{
+        console.log()
+    });
 }
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
@@ -124,10 +137,21 @@ async function addEmployee(role){
 
 async function notFinished(){
     const role = await promptUser(addEmployeePrompt);
+    // promptUser(addEmployeePrompt)
+    //     .then((role) => {
+                // everything in here will wait for promptUser(addEmployeePrompt) to complete
+    //     })
+
+    // promptUser(addEmployeePrompt);
+    // everything in here will not wait for promptUser(addEmployeePrompt); to complete
+
+    // await promptUser(addEmployeePrompt);
+    // everything in here will wait for promptUser(addEmployeePrompt) to complete
+
     if (role.role != "finished"){
         // add Employee!
         await addEmployee(role.role);
-        // console.log(employees);
+        console.log(employees);
         await notFinished();
     }
 }
@@ -139,11 +163,11 @@ try {
     
     await notFinished();
 
-    checkOutputFolder();
+    await checkOutputFolder();
 
-    console.log(employees);
+    await writeTeamHTML(employees);
     
-    writeTeamHTML(employees);
+    console.log(employees);
 
     } catch (err) {
         console.log(err);
