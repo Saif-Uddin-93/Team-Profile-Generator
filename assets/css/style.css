@@ -1,3 +1,26 @@
-.card {
-    min-width: 15rem;
+.jumbotron {
+    background-color: blueviolet;
+    color: white;
+}
+
+.container {
+    margin-bottom: 5rem;
+    color: white;
+    
+    & .card {
+        & .card-body{
+            color: black;
+        }
+        min-width: 15rem;
+        
+        &.manager{
+            background-color: red;
+        }
+        &.engineer{
+            background-color: rgb(0, 85, 255);
+        }
+        &.intern{
+            background-color: green;
+        }
+    }
 }
