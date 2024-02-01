@@ -33,8 +33,6 @@ async function writeTeamHTML(team){
     });
 }
 
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
-
 // array of questions for user
 const addEmployeePrompt = [{
     type: 'list',
@@ -83,24 +81,24 @@ const employeePrompts = (role)=>[
 ];
 
 let employees = [] // {
-//     manager: [
+//     manager: [{
 //     //     name: '',
 //     //     id: '',
 //     //     email: '',
 //     //     officeNumber: '',
-//     ],
-//     engineer: [
+//     }],
+//     engineer: [{
 //     //     name: '',
 //     //     id: '',
 //     //     email: '',
 //     //     github: '',
-//     ],
-//     intern: [
+//     }],
+//     intern: [{
 //     //     name: '',
 //     //     id: '',
 //     //     email: '',
 //     //     school: '',
-//     ],
+//     }],
 // }
 
 const promptUser = (prompts)=> {
