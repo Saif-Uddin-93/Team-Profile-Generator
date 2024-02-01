@@ -2,11 +2,11 @@
 
 ## Description
 
-This project was created to allow users to create a graphical representation of a team involving a manager, engineers and interns. The aim was to be able to use the terminal to iunput information on team members to generate profile cards that clearly show the members and their roles. The project meets the following criteria:
+This project was created to allow users to create a graphical representation of a team involving a manager, engineers and interns. The aim was to be able to use the terminal to input information on team members to generate profile cards that clearly show the members and their roles. The project meets the following criteria:
 
-* To be be able to input data into a series of prompts on the terminal
+* To be able to input data into a series of prompts on the terminal
 * For the answers inputted to be used to generate the profile cards for each employee.
-* The outputted HTML page opens a page showing the cards in that is easy to view.
+* The outputted HTML page opens a page showing the cards in a way that is easy to view.
 
 The main things I've learned from this project are:
 
@@ -47,7 +47,7 @@ Once the dependencies have been installed, run the following command from the fo
 node index.js
 ```
 A series of prompts will appear in the console asking for information regarding each employee.
-After the manager information is entered, each new employee added, the console will log the current team members.
+After the manager information is entered, after each new employee is added, the console will log the current team members.
 The application will stop running once the finished option is selected which will generate the "team.html" file in a folder called "output".
 Open the team.html file in a web browser you will see something resembling the screenshot below:
 
@@ -56,7 +56,7 @@ Screenshot of the final application:
 
 ## Credits
 
-Assets in this project belong to the edX organisers. All additional work added by myself can be seen in the commit history of repository.
+Assets in this project belong to the edX organisers. All additional work added by myself can be seen in the commit history of the repository.
 
 ## License
 ### MIT License
