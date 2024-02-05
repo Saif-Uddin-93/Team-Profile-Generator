@@ -158,7 +158,7 @@ async function notFinished(){
 // function to initialize program
 const init = async () => {
 try {
-    await addEmployee('manager', 0)
+    await addEmployee('manager')
     
     await notFinished();
 
